@@ -4,7 +4,7 @@ import path from "node:path";
 
 const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.GEMINI_API_KEY;
-const MODEL = "gemini-3.8-flash";
+const MODEL = "gemini-3.5-flash-lite";
 
 const server = http.createServer(async (req, res) => {
   const headers = { "Content-Type": "application/json; charset=utf-8" };
