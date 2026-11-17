@@ -275,38 +275,48 @@ footer p{font-size:11px}
     color: black !important;
   }
 
-  header, footer, .hero,
-  .features-section, .planner-info,
-  .steps-section, .team-section,
-  .about-section, .form-card,
+  header,
+  footer,
+  .hero,
+  .features-section,
+  .planner-info,
+  .steps-section,
+  .team-section,
+  .about-section,
+  #lessonForm,
+  .form-title,
+  .form-subtitle,
   .result-actions {
     display: none !important;
   }
 
-  .planner-section {
-    display: block !important;
-    padding: 0 !important;
-    background: white !important;
-  }
-
-  .planner-box {
-    display: block !important;
-  }
-
+  .planner-section,
+  .planner-box,
+  .form-card,
   .result {
     display: block !important;
-    border: none !important;
-    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
     overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: white !important;
   }
 
   .result-content {
     display: block !important;
     white-space: pre-wrap !important;
     overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
     font-size: 12pt !important;
     line-height: 1.6 !important;
     color: black !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
   }
 }
 </style>
