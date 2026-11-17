@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="MoveClass — дене шынықтыру сабақтарын жоспарлауға арналған DamuSport жобасы.">
+<title>MoveClass | DamuSport</title>
+<style>
+:root{--navy:#10263f;--blue:#1769aa;--cyan:#21b7bd;--mint:#dff7f3;--bg:#f3f8fb;--text:#1d3045;--muted:#687d90;--line:#e2ebf1;--white:#fff;--shadow:0 18px 50px rgba(18,48,75,.09)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);font-family:Inter,Arial,sans-serif;color:var(--text)}
+a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}
+header{background:linear-gradient(120deg,#10263f 0%,#155b91 65%,#168b9b 100%);color:#fff;overflow:hidden}
+nav{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ffffff25}
+.brand{font-weight:900;font-size:23px;letter-spacing:.4px}.brand b{color:#5ee0d4}.brand small{display:block;font-size:9px;letter-spacing:3px;color:#c5dbe9;margin-top:3px}
+.navlinks{display:flex;gap:26px;font-size:13px;color:#e2eef7}.navlinks a:hover{color:#7ff1e5}
+.navbtn{border:1px solid #ffffff70;padding:10px 15px;border-radius:12px;font-size:13px}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:35px;align-items:center;padding:65px 0 85px;position:relative}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:#ffffff18;border:1px solid #ffffff35;border-radius:30px;padding:8px 12px;font-size:12px;color:#d9f7f3}
+.dot{width:7px;height:7px;background:#5ee0d4;border-radius:50%}
+h1{font-size:clamp(36px,5.5vw,60px);line-height:1.04;letter-spacing:-1.8px;margin:20px 0 17px}
+.hero p{max-width:590px;color:#d8e8f3;line-height:1.75;font-size:16px;margin:0}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;padding:14px 19px;font-weight:750;font-size:14px;cursor:pointer}
+.btn.primary{background:#55ddd0;color:#0d3146}.btn.ghost{border:1px solid #ffffff65;color:white;background:transparent}
+.hero-card{background:#ffffff12;border:1px solid #ffffff35;border-radius:24px;padding:22px;backdrop-filter:blur(8px);box-shadow:0 25px 70px #071b2b30;transform:rotate(1deg)}
+.hero-card-top{display:flex;justify-content:space-between;align-items:center;color:#e7f6fb;font-size:12px}
+.live{background:#baf8e9;color:#126b62;padding:6px 9px;border-radius:20px;font-weight:700}
+.preview-title{font-size:19px;font-weight:800;margin:24px 0 5px}.preview-sub{color:#c8dce9;font-size:12px}
+.preview-row{display:flex;align-items:center;gap:12px;background:#ffffff13;border:1px solid #ffffff1c;padding:12px;border-radius:13px;margin-top:12px}
+.preview-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:#ffffff20;font-size:19px}
+.preview-row strong{display:block;font-size:13px}.preview-row span{font-size:11px;color:#c8dce9}
+main{padding:55px 0 70px}
+.section-head{text-align:center;max-width:650px;margin:0 auto 28px}.kicker{font-size:11px;font-weight:800;letter-spacing:2px;color:#168c9b;text-transform:uppercase}.section-head h2{font-size:30px;margin:10px 0}.section-head p{color:var(--muted);line-height:1.65;font-size:14px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:65px}
+.feature{background:white;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 7px 24px #1c3b5608}
+.feature-icon{width:43px;height:43px;border-radius:13px;background:#e9f7f8;display:grid;place-items:center;font-size:21px}
+.feature h3{font-size:16px;margin:15px 0 8px}.feature p{font-size:13px;line-height:1.65;color:var(--muted);margin:0}
+.planner{display:grid;grid-template-columns:350px 1fr;gap:18px;align-items:start}
+.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow)}
+.panel h2{font-size:21px;margin:0 0 7px}.hint{font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 18px}
+label{display:block;font-size:12px;font-weight:750;margin:14px 0 7px}
+input,select{width:100%;padding:12px 13px;border:1px solid #dce6ed;border-radius:11px;background:#fbfdfe;color:var(--text);font-size:14px;outline:none}
+input:focus,select:focus{border-color:#3bbac0;box-shadow:0 0 0 3px #21b7bd18}
+.btn.full{width:100%;margin-top:20px;background:linear-gradient(100deg,var(--blue),var(--cyan));color:white}
+.output{min-height:460px}.empty{min-height:410px;display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column;padding:25px}
+.empty .big{font-size:48px}.empty h3{margin:12px 0 7px}.empty p{max-width:370px;color:var(--muted);font-size:13px;line-height:1.65}
+.tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.tag{font-size:11px;background:#eaf7f7;color:#167c83;border-radius:20px;padding:7px 10px;font-weight:700}
+.result-head{border-bottom:1px solid var(--line);padding-bottom:15px;margin-bottom:16px}.result-head h2{font-size:23px;margin:12px 0 5px}.result-head p{font-size:12px;color:var(--muted);margin:0}
+.result-section{margin:17px 0}.result-section h3{font-size:14px;color:#1769aa;margin:0 0 8px}.result-section p,.result-section li{font-size:13px;line-height:1.65}.result-section ul{padding-left:19px;margin:5px 0}
+.notice{background:#fff8e8;border-left:4px solid #efbd50;border-radius:9px;padding:12px;font-size:12px;line-height:1.6;margin-top:18px}
+.output-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.small-btn{border:1px solid #d9e5ec;background:#fff;color:#31536d;border-radius:10px;padding:10px 13px;font-size:12px;font-weight:700;cursor:pointer}
+.how{margin-top:65px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.step{padding:20px;background:#eaf3f8;border-radius:16px}.num{font-size:12px;color:#168c9b;font-weight:900;letter-spacing:1px}.step h3{font-size:15px;margin:9px 0 6px}.step p{font-size:13px;color:var(--muted);line-height:1.6;margin:0}
+.about{margin-top:65px;background:linear-gradient(120deg,#10263f,#1769aa);border-radius:22px;padding:30px;color:white;display:flex;justify-content:space-between;gap:20px;align-items:center}
+.about h2{margin:0 0 8px;font-size:23px}.about p{margin:0;color:#d3e6f2;font-size:13px;line-height:1.6;max-width:680px}
+footer{padding:25px 0;color:#8495a3;font-size:12px;text-align:center}
+@media(max-width:800px){.hero{grid-template-columns:1fr;padding:45px 0 55px}.hero-card{max-width:500px}.planner{grid-template-columns:1fr}.features,.steps{grid-template-columns:1fr}.navlinks{display:none}.about{display:block}.about .btn{margin-top:18px}}
+@media print{header, .features,.how,.about,footer,.form-panel,.output-actions{display:none!important}body{background:white}.wrap{width:100%}main{padding:0}.planner{display:block}.panel{box-shadow:none;border:0;padding:0}.output{min-height:0}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <nav>
+   <a class="brand" href="#">MOVE<b>CLASS</b><small>DAMUSPORT ЖОБАСЫ</small></a>
+   <div class="navlinks"><a href="#features">Мүмкіндіктер</a><a href="#planner">Жоспар құрастыру</a><a href="#about">Жоба туралы</a></div>
+   <a class="navbtn" href="#planner">Бастау →</a>
+  </nav>
+  <section class="hero">
+   <div>
+    <div class="eyebrow"><span class="dot"></span> Дене шынықтыру · Білім · Технология</div>
+    <h1>Сабақты жоспарлау<br>енді оңайырақ.</h1>
+    <p>MoveClass — дене шынықтыру мұғалімдеріне оқушылардың жасына, сыныбына және дайындық деңгейіне сай сабақ жоспарының үлгісін жасауға көмектесетін цифрлық жоба.</p>
+    <div class="actions"><a class="btn primary" href="#planner">Жоспар құрастыру ↗</a><a class="btn ghost" href="#features">Мүмкіндіктерді көру</a></div>
+   </div>
+   <div class="hero-card">
+    <div class="hero-card-top"><strong>MOVECLASS / ЖОСПАРЛАУШЫ</strong><span class="live">● Демо-нұсқа</span></div>
+    <div class="preview-title">Сабақ құрылымы</div><div class="preview-sub">45 минут · 7-сынып · Баскетбол</div>
+    <div class="preview-row"><div class="preview-icon">🔥</div><div><strong>Дайындық бөлімі</strong><span>Қыздыру және денені дайындау</span></div></div>
+    <div class="preview-row"><div class="preview-icon">🏀</div><div><strong>Негізгі бөлім</strong><span>Техника, жаттығу, қозғалыс ойыны</span></div></div>
+    <div class="preview-row"><div class="preview-icon">🧘</div><div><strong>Қорытынды бөлім</strong><span>Қалпына келу және кері байланыс</span></div></div>
+   </div>
+  </section>
+ </div>
+</header>
+<main class="wrap">
+ <section id="features">
+  <div class="section-head"><div class="kicker">Негізгі мүмкіндіктер</div><h2>Мұғалімге арналған бір көмекші</h2><p>Сабақ параметрлерін енгізіп, құрылымдалған жоспар үлгісін алыңыз. Дайын жоспарды мұғалім нақты сыныпқа бейімдей алады.</p></div>
+  <div class="features">
+   <article class="feature"><div class="feature-icon">🎯</div><h3>Жеке параметрлер</h3><p>Сыныпты, жасты, сабақ тақырыбын және дене дайындығы деңгейін таңдаңыз.</p></article>
+   <article class="feature"><div class="feature-icon">⚡</div><h3>Жоспар үлгісі</h3><p>Сабақтың мақсаты, дайындық, негізгі және қорытынды бөлімдерін бірден алыңыз.</p></article>
+   <article class="feature"><div class="feature-icon">🛡️</div><h3>Қауіпсіздікке назар</h3><p>Жаттығуды оқушының мүмкіндігіне сай бейімдеу және қауіпсіздік ережелерін ескеру.</p></article>
+  </div>
+ </section>
+ <section id="planner">
+  <div class="section-head"><div class="kicker">Интерактивті құрал</div><h2>Сабақ жоспарын құрастыру</h2><p>Төмендегі өрістерді толтырыңыз. Параметрлеріңізді жіберіңіз: AI жеке сабақ жоспарын құрастырады.</p></div>
+  <div class="planner">
+   <section class="panel form-panel">
+    <h2>Сабақ параметрлері</h2><p class="hint">Өзіңізге қажетті параметрлерді таңдаңыз.</p>
+    <form id="lessonForm">
+     <label for="grade">Сынып</label><select id="grade"><option>1-сынып</option><option>2-сынып</option><option>3-сынып</option><option>4-сынып</option><option>5-сынып</option><option>6-сынып</option><option selected>7-сынып</option><option>8-сынып</option><option>9-сынып</option><option>10-сынып</option><option>11-сынып</option></select>
+     <label for="age">Оқушылардың жасы</label><input id="age" type="number" min="6" max="18" value="13" required>
+     <label for="topic">Сабақ тақырыбы</label><select id="topic"><option>Баскетбол</option><option>Волейбол</option><option>Футбол</option><option>Жеңіл атлетика</option><option>Гимнастика</option><option>Жалпы дене дайындығы</option></select>
+     <label for="duration">Сабақ ұзақтығы</label><select id="duration"><option>40 минут</option><option selected>45 минут</option><option>60 минут</option></select>
+     <label for="level">Дене дайындығы</label><select id="level"><option>Бастапқы</option><option selected>Орташа</option><option>Жоғары</option></select>
+     <button class="btn full" type="submit">✦ Жоспарды құрастыру</button>
+    </form>
+   </section>
+   <section class="panel output" id="result" aria-live="polite">
+    <div class="empty"><div class="big">🏃‍♂️</div><h3>Жоспарыңыз осы жерде пайда болады</h3><p>Сол жақтағы параметрлерді таңдап, «Жоспарды құрастыру» батырмасын басыңыз.</p><div class="tags"><span class="tag">Жас ерекшелігі</span><span class="tag">Жаттығулар</span><span class="tag">Қауіпсіздік</span></div></div>
+   </section>
+  </div>
+ </section>
+ <section class="how">
+  <div class="section-head"><div class="kicker">Қолдану жолы</div><h2>Үш қарапайым қадам</h2></div>
+  <div class="steps">
+   <article class="step"><div class="num">01 / ЕНГІЗУ</div><h3>Сабақ параметрлерін таңдаңыз</h3><p>Сынып, жас, спорт түрі, сабақ уақыты және дайындық деңгейін көрсетіңіз.</p></article>
+   <article class="step"><div class="num">02 / ҚҰРАСТЫРУ</div><h3>Жоспар үлгісін алыңыз</h3><p>Жүйе сабақтың негізгі бөлімдері мен жаттығулар тізімін көрсетеді.</p></article>
+   <article class="step"><div class="num">03 / БЕЙІМДЕУ</div><h3>Мұғалім тексеріп қолданады</h3><p>Жоспарды оқу бағдарламасына, сыныптың мүмкіндігіне және қауіпсіздік талаптарына сәйкестендіріңіз.</p></article>
+  </div>
+ </section>
+ <section class="about" id="about"><div><h2>DamuSport ұсынады</h2><p>MoveClass жобасының мақсаты — жасанды интеллект мүмкіндіктерін дене шынықтыру сабағын жоспарлау үдерісінде қолдану, мұғалімнің уақытын үнемдеуге және оқушыларға лайық жаттығуларды таңдауға көмектесу.</p></div><a class="btn primary" href="#planner">Қолданып көру ↑</a></section>
+</main>
+<footer class="wrap">© 2026 MoveClass · DamuSport · Оқу жобасының демонстрациялық веб-нұсқасы</footer>
+<script>
+const form=document.getElementById('lessonForm');
+form.addEventListener('submit', async e=>{
+ e.preventDefault();
+ const grade=document.getElementById('grade').value;
+ const age=Number(document.getElementById('age').value);
+ const topic=document.getElementById('topic').value;
+ const duration=document.getElementById('duration').value;
+ const level=document.getElementById('level').value;
+ if(age<6||age>18){alert('Жасты 6 мен 18 аралығында енгізіңіз.');return;}
+ const result=document.getElementById('result');
+ result.innerHTML='<div class="empty"><div class="big">🤖</div><h3>AI сабақ жоспарын дайындап жатыр…</h3><p>Бұл бірнеше секунд алуы мүмкін.</p></div>';
+ const submit=form.querySelector('button[type="submit"]');
+ submit.disabled=true; submit.textContent='Жоспар дайындалуда…';
+ try{
+   const response=await fetch('/api/generate',{
+     method:'POST',headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({grade,age,topic,duration,level})
+   });
+   const data=await response.json();
+   if(!response.ok) throw new Error(data.error||'Сұраныс орындалмады.');
+   const safeText=String(data.plan||'Жоспар бос қайтты.');
+   result.innerHTML=`<div class="result-head"><div class="tags" style="justify-content:flex-start"><span class="tag">${grade}</span><span class="tag">${age} жас</span><span class="tag">${level} деңгей</span><span class="tag">AI жоспары</span></div><h2>${topic} сабағының жоспары</h2><p>${duration} · MoveClass AI көмекшісі</p></div><div id="aiPlan" style="white-space:pre-wrap;font-size:13px;line-height:1.75"></div><div class="notice"><b>Маңызды:</b> AI ұсынған жоспарды мұғалім оқу бағдарламасына, оқушылардың денсаулық жағдайына, жеке мүмкіндіктеріне және қауіпсіздік талаптарына сай тексеріп, бейімдеуі керек.</div><div class="output-actions"><button class="small-btn" onclick="window.print()">⎙ Басып шығару / PDF</button><button class="small-btn" id="copyBtn">Көшіру</button></div>`;
+   document.getElementById('aiPlan').textContent=safeText;
+   document.getElementById('copyBtn').addEventListener('click',async()=>{
+     try{await navigator.clipboard.writeText(safeText);document.getElementById('copyBtn').textContent='Көшірілді ✓';}
+     catch(err){alert('Көшіру мүмкін болмады. Мәтінді белгілеп көшіріңіз.');}
+   });
+ }catch(err){
+   result.innerHTML=`<div class="empty"><div class="big">⚠️</div><h3>AI-мен байланысу мүмкін болмады</h3><p>${String(err.message).replace(/[<>]/g,'')}</p><p>Сервер іске қосылғанын және API кілті дұрыс орнатылғанын тексеріңіз.</p></div>`;
+ }finally{submit.disabled=false;submit.textContent='✦ Жоспарды құрастыру';}
+});
+
+</script>
+</body>
+</html>
