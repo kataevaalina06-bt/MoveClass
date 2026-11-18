@@ -790,83 +790,243 @@ document.getElementById('copyBtn').addEventListener('click', async () => {
 document.getElementById('printBtn').addEventListener('click', () => {
   window.print();
 });
-  const simulatorData = {
-  basketball: {
-    title: "🏀 Баскетбол",
-    question: "Баскетболда допты алып жүру үшін қай әрекет орындалады?",
-    answers: ["Допты аяқпен тебу", "Допты жерге соғып жүргізу", "Допты екі қолмен ұстап жүгіру"],
-    correct: 1
-  },
-  volleyball: {
-    title: "🏐 Волейбол",
-    question: "Волейболда допты ойынға қосу қалай аталады?",
-    answers: ["Подача", "Пенальти", "Дриблинг"],
-    correct: 0
-  },
-  football: {
-    title: "⚽ Футбол",
-    question: "Футбол командасында алаңда неше ойыншы болады?",
-    answers: ["8", "10", "11"],
-    correct: 2
-  },
-  swimming: {
-    title: "🏊 Жүзу",
-    question: "Жүзу кезінде тыныс алу қалай орындалады?",
-    answers: ["Су астында дем алу", "Белгіленген ырғақпен дем алу", "Мүлдем дем алмау"],
-    correct: 1
-  },
-  athletics: {
-    title: "🏃 Жеңіл атлетика",
-    question: "Жеңіл атлетикаға қайсысы жатады?",
-    answers: ["Жүгіру", "Шахмат", "Тоғызқұмалақ"],
-    correct: 0
-  },
-  national: {
-    title: "🇰🇿 Ұлттық ойындар",
-    question: "Тоғызқұмалақ қандай ойын?",
-    answers: ["Күш сынасу ойыны", "Зияткерлік ойын", "Жүгіру ойыны"],
-    correct: 1
-  }
+// AI SPORT SIMULATOR
+
+let currentQuiz = [];
+let currentQuestionIndex = 0;
+let currentScore = 0;
+let currentSimulatorTitle = "";
+
+const sportNames = {
+  basketball: "Баскетбол",
+  volleyball: "Волейбол",
+  football: "Футбол",
+  swimming: "Жүзу",
+  athletics: "Жеңіл атлетика",
+  national: "Қазақтың ұлттық ойындары"
 };
 
-function startSimulator(type) {
-  const game = simulatorData[type];
+function escapeHTML(text) {
+  return String(text).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+async function startSimulator(type) {
   const box = document.getElementById("simulator-result");
+
+  currentSimulatorTitle = sportNames[type];
 
   box.style.display = "block";
   box.innerHTML = `
-    <h2>${game.title}</h2>
-    <p>${game.question}</p>
+    <h2>${currentSimulatorTitle}</h2>
+    <p>🤖 AI 15 сұрақтан тұратын тест дайындап жатыр...</p>
+    <p>⏳ Күте тұрыңыз...</p>
+  `;
+
+  box.scrollIntoView({ behavior: "smooth" });
+
+  try {
+    const response = await fetch("/api/simulator-questions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        sport: currentSimulatorTitle,
+        grade: "7-сынып",
+        age: "13 жас",
+        level: "Орташа"
+      })
+    });
+
+    const quiz = await response.json();
+
+    if (!response.ok) {
+      throw new Error(quiz.error || "AI қатесі");
+    }
+
+    if (!Array.isArray(quiz.questions) ||
+        quiz.questions.length !== 15) {
+      throw new Error("15 сұрақ толық жасалмады.");
+    }
+
+    currentQuiz = quiz.questions;
+    currentQuestionIndex = 0;
+    currentScore = 0;
+
+    showSimulatorQuestion();
+
+  } catch (error) {
+    console.error("Simulator error:", error);
+
+    box.innerHTML = `
+      <h2>Қате пайда болды 😕</h2>
+      <p>AI сұрақтарды жүктей алмады.</p>
+      <p>${escapeHTML(error.message)}</p>
+      <button onclick="startSimulator('${type}')">
+        Қайта көру ↻
+      </button>
+    `;
+  }
+}
+
+function showSimulatorQuestion() {
+  const box = document.getElementById("simulator-result");
+  const q = currentQuiz[currentQuestionIndex];
+
+  box.innerHTML = `
+    <h2>${currentSimulatorTitle}</h2>
+
+    <p>
+      Сұрақ ${currentQuestionIndex + 1} / ${currentQuiz.length}
+    </p>
+
+    <div style="
+      height:8px;
+      background:#29445e;
+      border-radius:10px;
+      margin:15px 0 25px;
+      overflow:hidden;">
+      <div style="
+        height:100%;
+        width:${((currentQuestionIndex + 1) / currentQuiz.length) * 100}%;
+        background:#35d5e8;">
+      </div>
+    </div>
+
+    <h3>${escapeHTML(q.question)}</h3>
+
     <div id="simulator-answers">
-      ${game.answers.map((answer, index) => `
-        <button onclick="checkSimulatorAnswer('${type}', ${index})"
-        style="display:block;width:100%;padding:14px;margin:10px 0;
-        border:1px solid #35d5e8;border-radius:10px;
-        background:#081b32;color:white;text-align:left;cursor:pointer">
-          ${answer}
+      ${q.options.map((answer, index) => `
+        <button onclick="answerSimulator(${index})"
+          style="
+            display:block;
+            width:100%;
+            padding:15px;
+            margin:10px 0;
+            border:1px solid #35d5e8;
+            border-radius:12px;
+            background:#081b32;
+            color:white;
+            text-align:left;
+            cursor:pointer;">
+          ${String.fromCharCode(65 + index)}. ${escapeHTML(answer)}
         </button>
       `).join("")}
     </div>
+
     <div id="simulator-score"></div>
   `;
-
-  box.scrollIntoView({behavior:"smooth"});
 }
 
-function checkSimulatorAnswer(type, selected) {
-  const game = simulatorData[type];
+function answerSimulator(selected) {
+  const q = currentQuiz[currentQuestionIndex];
   const result = document.getElementById("simulator-score");
   const buttons = document.querySelectorAll("#simulator-answers button");
 
   buttons.forEach(button => button.disabled = true);
 
-  if (selected === game.correct) {
-    result.innerHTML = "<h3>Дұрыс жауап! 🎉</h3><p>Сен 10 ұпай жинадың!</p>";
+  const isCorrect = selected === q.correct;
+
+  if (isCorrect) {
+    currentScore++;
+  }
+
+  result.innerHTML = `
+    <div style="
+      margin-top:20px;
+      padding:18px;
+      border-radius:12px;
+      background:#081b32;">
+      <h3>${isCorrect ? "Дұрыс жауап! 🎉" : "Қате жауап! ❌"}</h3>
+
+      <p>
+        ${isCorrect
+          ? "Жарайсың! Сен дұрыс жауап бердің."
+          : "Дұрыс жауап: " + escapeHTML(q.options[q.correct])}
+      </p>
+
+      <p>
+        💡 ${escapeHTML(q.explanation)}
+      </p>
+
+      <button onclick="nextSimulatorQuestion()"
+        style="
+          padding:13px 22px;
+          margin-top:12px;
+          border:none;
+          border-radius:10px;
+          background:linear-gradient(135deg,#1688e8,#35d5e8);
+          color:white;
+          font-weight:bold;">
+        ${currentQuestionIndex === currentQuiz.length - 1
+          ? "Нәтижені көру"
+          : "Келесі сұрақ →"}
+      </button>
+    </div>
+  `;
+}
+
+function nextSimulatorQuestion() {
+  currentQuestionIndex++;
+
+  if (currentQuestionIndex < currentQuiz.length) {
+    showSimulatorQuestion();
   } else {
-    result.innerHTML = "<h3>Қате жауап!</h3><p>0 ұпай. Дұрыс жауап: " +
-      game.answers[game.correct] + "</p>";
+    showSimulatorFinalResult();
   }
 }
+
+function showSimulatorFinalResult() {
+  const box = document.getElementById("simulator-result");
+
+  const percentage = Math.round(
+    (currentScore / currentQuiz.length) * 100
+  );
+
+  let message = "";
+
+  if (percentage >= 90) {
+    message = "Өте жақсы! Сен спортты керемет меңгергенсің! 🏆";
+  } else if (percentage >= 70) {
+    message = "Жақсы нәтиже! Тағы да жаттыға бер! 👏";
+  } else if (percentage >= 50) {
+    message = "Жаман емес! Біліміңді әлі де жетілдір! 💪";
+  } else {
+    message = "Қайталап оқып, тағы бір рет байқап көр! 📚";
+  }
+
+  box.innerHTML = `
+    <div style="text-align:center;padding:20px;">
+      <h2>🏆 Тест аяқталды!</h2>
+
+      <h1 style="font-size:55px;color:#35d5e8;">
+        ${percentage}%
+      </h1>
+
+      <h3>${currentScore} / ${currentQuiz.length} дұрыс жауап</h3>
+
+      <p>${message}</p>
+
+      <button onclick="startSimulator('${Object.keys(sportNames).find(key => sportNames[key] === currentSimulatorTitle)}')"
+        style="
+          padding:14px 25px;
+          margin-top:20px;
+          border:none;
+          border-radius:10px;
+          background:linear-gradient(135deg,#1688e8,#35d5e8);
+          color:white;
+          font-weight:bold;">
+        Қайта тапсыру ↻
+      </button>
+    </div>
+  `;
+} 
 </script>
 </body>
 </html>
