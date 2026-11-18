@@ -319,6 +319,97 @@ footer p{font-size:11px}
     page-break-inside: auto !important;
   }
 }
+  /* SIMULATORS */
+.simulators-section {
+  padding: 90px 0;
+  background: #081b32;
+  color: white;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.section-tag {
+  color: #35d5e8;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.section-heading h2 {
+  font-size: 34px;
+  margin: 15px 0;
+}
+
+.section-heading p {
+  color: #a9bfd3;
+  font-size: 15px;
+}
+
+.simulator-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.simulator-card {
+  background: #102b49;
+  border: 1px solid rgba(53,213,232,.2);
+  border-radius: 20px;
+  padding: 28px;
+  transition: .3s;
+}
+
+.simulator-card:hover {
+  transform: translateY(-6px);
+  border-color: #35d5e8;
+}
+
+.simulator-icon {
+  font-size: 42px;
+  margin-bottom: 15px;
+}
+
+.simulator-card h3 {
+  font-size: 21px;
+  margin-bottom: 12px;
+}
+
+.simulator-card p {
+  color: #b6c9da;
+  line-height: 1.7;
+  min-height: 75px;
+}
+
+.simulator-card button {
+  margin-top: 18px;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#1688e8,#35d5e8);
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.simulator-result {
+  margin-top: 30px;
+  padding: 25px;
+  background: #102b49;
+  border-radius: 18px;
+}
+
+@media(max-width:800px) {
+  .simulator-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading h2 {
+    font-size: 26px;
+  }
+}
 </style>
 </head>
 <body>
@@ -699,6 +790,83 @@ document.getElementById('copyBtn').addEventListener('click', async () => {
 document.getElementById('printBtn').addEventListener('click', () => {
   window.print();
 });
+  const simulatorData = {
+  basketball: {
+    title: "🏀 Баскетбол",
+    question: "Баскетболда допты алып жүру үшін қай әрекет орындалады?",
+    answers: ["Допты аяқпен тебу", "Допты жерге соғып жүргізу", "Допты екі қолмен ұстап жүгіру"],
+    correct: 1
+  },
+  volleyball: {
+    title: "🏐 Волейбол",
+    question: "Волейболда допты ойынға қосу қалай аталады?",
+    answers: ["Подача", "Пенальти", "Дриблинг"],
+    correct: 0
+  },
+  football: {
+    title: "⚽ Футбол",
+    question: "Футбол командасында алаңда неше ойыншы болады?",
+    answers: ["8", "10", "11"],
+    correct: 2
+  },
+  swimming: {
+    title: "🏊 Жүзу",
+    question: "Жүзу кезінде тыныс алу қалай орындалады?",
+    answers: ["Су астында дем алу", "Белгіленген ырғақпен дем алу", "Мүлдем дем алмау"],
+    correct: 1
+  },
+  athletics: {
+    title: "🏃 Жеңіл атлетика",
+    question: "Жеңіл атлетикаға қайсысы жатады?",
+    answers: ["Жүгіру", "Шахмат", "Тоғызқұмалақ"],
+    correct: 0
+  },
+  national: {
+    title: "🇰🇿 Ұлттық ойындар",
+    question: "Тоғызқұмалақ қандай ойын?",
+    answers: ["Күш сынасу ойыны", "Зияткерлік ойын", "Жүгіру ойыны"],
+    correct: 1
+  }
+};
+
+function startSimulator(type) {
+  const game = simulatorData[type];
+  const box = document.getElementById("simulator-result");
+
+  box.style.display = "block";
+  box.innerHTML = `
+    <h2>${game.title}</h2>
+    <p>${game.question}</p>
+    <div id="simulator-answers">
+      ${game.answers.map((answer, index) => `
+        <button onclick="checkSimulatorAnswer('${type}', ${index})"
+        style="display:block;width:100%;padding:14px;margin:10px 0;
+        border:1px solid #35d5e8;border-radius:10px;
+        background:#081b32;color:white;text-align:left;cursor:pointer">
+          ${answer}
+        </button>
+      `).join("")}
+    </div>
+    <div id="simulator-score"></div>
+  `;
+
+  box.scrollIntoView({behavior:"smooth"});
+}
+
+function checkSimulatorAnswer(type, selected) {
+  const game = simulatorData[type];
+  const result = document.getElementById("simulator-score");
+  const buttons = document.querySelectorAll("#simulator-answers button");
+
+  buttons.forEach(button => button.disabled = true);
+
+  if (selected === game.correct) {
+    result.innerHTML = "<h3>Дұрыс жауап! 🎉</h3><p>Сен 10 ұпай жинадың!</p>";
+  } else {
+    result.innerHTML = "<h3>Қате жауап!</h3><p>0 ұпай. Дұрыс жауап: " +
+      game.answers[game.correct] + "</p>";
+  }
+}
 </script>
 </body>
 </html>
